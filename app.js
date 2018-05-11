@@ -20,6 +20,7 @@ const index = require('./routes/index');
 const auth = require('./routes/auth')
 const stories = require('./routes/stories')
 const twitter = require('./routes/twitter')
+const users = require('./routes/users')
 
 // -- Setup the App
 
@@ -65,6 +66,7 @@ app.use('/', index);
 app.use('/auth', auth);
 app.use('/stories', stories);
 app.use('/twitter', twitter);
+app.use('/users', users);
 
 // -- Error Handler
 
