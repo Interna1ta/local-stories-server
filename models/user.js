@@ -32,7 +32,7 @@ const userSchema = new Schema({
   },
   profile_image_url: {
     type: String,
-    default: 'www.google.es'
+    default: 'https://thenounproject.com/term/avatar/72032/'
   }
 });
 

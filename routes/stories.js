@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const Story = require('../models/story');
+// const User = require('')
 
 // router.get('/', (req, res, next) => {
 //   Story.find({}, (err, entries) => {
@@ -14,6 +15,7 @@ const Story = require('../models/story');
 
 router.get('/', (req, res, next) => {
   Story.find({})
+    .populate('user')
     .then((result) => {
       res.json(result);
     })
@@ -32,7 +34,7 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
   
   const text = req.body.text;
-  const user = req.body.user;
+  const userId = req.body.userId;
   console.log(text);
 
   if (!text) {
@@ -41,7 +43,7 @@ router.post('/', (req, res, next) => {
 
   const newStory = new Story({
     text: text,
-    user: user,
+    user: userId,
     coordinates: null,
     enabled: true
   });
@@ -52,6 +54,17 @@ router.post('/', (req, res, next) => {
     })
     .catch(next);
 
+});
+
+router.get('/users/:id', (req, res, next) => {
+  const userId = req.params.id;
+  // Story.find()
+  Story.find({ user: userId })
+  .populate('user')
+    .then((result) => { 
+      return res.json(result);
+    })
+    .catch(next);
 });
 
 // router.delete('/:id', (req, res, next) => {

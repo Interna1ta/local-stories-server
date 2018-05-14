@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const objectId = mongoose.Types.objectId;
+const objectId = Schema.Types.ObjectId;
 
 const StorySchema = new Schema({
   created_at: {
@@ -14,8 +14,7 @@ const StorySchema = new Schema({
     required: [true, "text is required"]
   },
   user: {
-    // type: [objectId],
-    type: Object,
+    type: objectId,
     ref: 'User'
   },
   coordinates: {
