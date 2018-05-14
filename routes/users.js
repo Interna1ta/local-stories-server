@@ -12,6 +12,46 @@ router.get('/:id', (req, res, next) => {
     .catch(next);
 });
 
+router.put('/:id/follow', (req, res, next) => {
+  const options = {
+    new: true
+  }
+  User.findById(req.params.id)
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ code: 'not-found' })
+      }
+
+      user.following.push(req.body.idMe);
+
+      return user.save()
+        .then(() => {
+          res.json(user);
+        })
+    })
+    .catch(next);
+});
+
+router.put('/:id/unfollow', (req, res, next) => {
+  const options = {
+    new: true
+  }
+  User.findById(req.params.id)
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ code: 'not-found' })
+      }
+
+      user.following.splice(req.body.idMe, 1);
+
+      return user.save()
+        .then(() => {
+          res.json(user);
+        })
+    })
+    .catch(next);
+});
+
 // router.put('/:id', (req, res, next) => {
 
 //   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
