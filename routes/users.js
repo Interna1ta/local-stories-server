@@ -54,7 +54,8 @@ router.put('/:id/unfollow', (req, res, next) => {
         return res.status(404).json({ code: 'not-found' })
       }
 
-      user.following.splice(req.body.idMe, 1);
+      const index = user.following.indexOf(req.body.idMe);
+      user.following.splice(index, 1);
 
       return user.save()
         .then(() => {
