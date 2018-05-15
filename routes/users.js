@@ -15,33 +15,22 @@ const User = require('../models/user');
 // });
 
 router.get('/:id/followers', (req, res, next) => {
-  let users = [];
-  // req.params.id
-  User.find({ "following" : req.params.id}) //@TODO error fix late
+  User.find({ "following" : req.params.id})
     .then((result)=>{
-      console.log(req.params.id)
-
       console.log(result);
       return res.json(result);
     })
     .catch(next);
+});
 
-
-  // User.find({})
-  //   .then((result) => {
-  //     result.forEach((user)=>{
-  //       for (let i=0; i<user.following.length; i++) {
-  //         if (user.following[i] == req.params.id) { 
-  //           console.log('blablacar');
-  //           users.push(user.following[i]);
-  //         };
-  //       };
-  //     });
-  //     console.log(users);
-  //     return res.json(users);
-  //   })
-  //   .catch(next);
-  });
+router.get('/:id/following', (req, res, next) => {
+  User.findById(req.params.id).populate('following')
+    .then((result) => {
+      console.log(result);
+      return res.json(result);
+    })
+    .catch(next);
+});
 
 router.get('/:id', (req, res, next) => {
   User.findById(req.params.id)
@@ -84,7 +73,6 @@ router.post('/:id/checkFollow', (req, res, next) => {
   const options = {
     new: true
   }
-  console.log('joder funciona nena');
   User.findById(req.params.id)
     .then((user) => {
       if (!user) {
@@ -108,7 +96,6 @@ router.post('/:id/checkFollowMe', (req, res, next) => {
   const options = {
     new: true
   }
-  console.log('joder funciona nena');
   User.findById(req.params.id)
     .then((user) => {
       if (!user) {
