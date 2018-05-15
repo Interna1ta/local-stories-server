@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const objectId = mongoose.Types.objectId;
+const objectId = mongoose.Schema.Types.ObjectId;
 
 const userSchema = new Schema({
   username: { // screen_name
@@ -23,9 +23,10 @@ const userSchema = new Schema({
   description: {
     type: String
   },
-  following: {
-    type: [objectId]
-  },
+  following: [{ 
+    type: objectId, 
+    ref: 'User' 
+  }],
   created_at: {
     type: Date,
     default: Date.now
