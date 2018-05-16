@@ -1,5 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const passport = require('passport');
+
 const router = express.Router();
 
 const User = require('../models/user');
@@ -77,6 +79,14 @@ router.post('/signup', (req, res, next) => {
 router.post('/logout', (req, res) => {
   req.session.currentUser = null;
   return res.status(204).send();
+});
+
+router.get('/twitter/login', passport.authenticate('twitter'), (req,res,next) => {
+  console.log('!');
+});
+
+router.get('/twitter/return', passport.authenticate('twitter'), (req, res, next) => {
+  res.redirect(process.env.CLIENT_URL);
 });
 
 module.exports = router; 

@@ -32,4 +32,14 @@ router.post('/', (req, res, next) => {
 
 });
 
+// router.get('/login', passport.authenticate('twitter'), (req, res, next) => {
+//   console.log('inside db');
+// });
+
+// router.get('/login', passport.authenticate('twitter'));
+
+// router.get('/return', passport.authenticate('twitter'), (req, res, next) => {
+
+// });
+
 module.exports = router;

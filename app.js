@@ -1,6 +1,6 @@
 'use strict';
 
-require('dotenv').config({path: './server/.env'});
+require('dotenv').config({path: './local-stories-server/.env'});
 
 // -- NPM Packages
 
@@ -13,6 +13,12 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+
+const passport = require('passport');
+const Strategy = require('passport-twitter').Strategy;
+
+
+// passport.authenticate('twitter') { failureRedirect: PATH }
 
 // -- Setup Routes
 
@@ -30,7 +36,6 @@ const app = express();
 
 mongoose.Promise = Promise;
 mongoose.connect(process.env.MONGODB_URI, {
-// mongoose.connect('mongodb://localhost/local-stories', {
   keepAlive: true,
   reconnectTries: Number.MAX_VALUE
 });
@@ -39,8 +44,24 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 app.use(cors({
   credentials: true,
-  origin: ['http://localhost:4200']
+  origin: [process.env.CLIENT_URL]
 }));
+
+passport.use(new Strategy({
+  consumerKey: process.env.TWITTER_CONSUMER_API_KEY,
+  consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+  callbackURL: 'http://localhost:3000/auth/twitter/return'
+}, function(token, tokenSecret, profile, callback) {
+    return callback(null, profile);
+}));
+
+passport.serializeUser(function(user, callback) {
+  callback(null, user);
+})
+
+passport.deserializeUser(function(obj, callback) {
+  callback(null, obj);
+})
 
 app.use(session({
   store: new MongoStore({
@@ -59,6 +80,9 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // -- Routes
 
