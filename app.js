@@ -17,9 +17,6 @@ const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
 const Strategy = require('passport-twitter').Strategy;
 
-
-// passport.authenticate('twitter') { failureRedirect: PATH }
-
 // -- Setup Routes
 
 const index = require('./routes/index');
@@ -47,21 +44,46 @@ app.use(cors({
   origin: [process.env.CLIENT_URL]
 }));
 
-passport.use(new Strategy({
+const options = {
   consumerKey: process.env.TWITTER_CONSUMER_API_KEY,
   consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-  callbackURL: 'http://localhost:3000/auth/twitter/return'
-}, function(token, tokenSecret, profile, callback) {
-    return callback(null, profile);
+  callbackURL: `http://localhost:3000/auth/twitter/return`
+};
+passport.use(new Strategy(options, (token, tokenSecret, profile, done) => {
+
+  // User.findOne({ username: profile.username }, (err, user) => {
+  //   if (err) {
+  //     return done(err);
+  //   }
+  //   if (user) {
+  //     return done(null, user);
+  //   }
+
+  //   const newUser = new User({
+  //     username: profile.username,
+  //     name: profile.displayName,
+
+  //     // ???: token
+  //     // ???: tokenSecret
+  //   });
+
+  //   newUser.save()
+  //     .then(() => done(null, newUser))
+  //     .catch(done);
+
+  // });
+  return callback(null, profile);
 }));
 
-passport.serializeUser(function(user, callback) {
-  callback(null, user);
-})
+passport.serializeUser((user, callback) => {
+  callback(null, user._id);
+});
 
-passport.deserializeUser(function(obj, callback) {
-  callback(null, obj);
-})
+passport.deserializeUser((id, callback) => {
+  User.findById(id)
+    .then(user => callback(null, user))
+    .catch(callback);
+});
 
 app.use(session({
   store: new MongoStore({

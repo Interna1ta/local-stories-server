@@ -7,12 +7,13 @@ const Twitter = require('twitter');
 
 router.post('/', (req, res, next) => {
    // @todo chek if user loggend in 
+   // if (!req.session.currentUser) { return res.status(401).json({code: 'unauthorized' }); }
 
   const client = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_API_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
     access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY, // @todo twitter req.session.currentUser.tokenKey,
-    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET // @todo twitter req.session.current.tokenSecret
+    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET // @todo twitter req.session.currentUser.tokenSecret
   });
   
   const tweet = req.body.text;
