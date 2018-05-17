@@ -24,6 +24,7 @@ const auth = require('./routes/auth')
 const stories = require('./routes/stories')
 const twitter = require('./routes/twitter')
 const users = require('./routes/users')
+const User = require('../local-stories-server/models/user');
 
 // -- Setup the App
 
@@ -47,7 +48,7 @@ app.use(cors({
 const options = {
   consumerKey: process.env.TWITTER_CONSUMER_API_KEY,
   consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-  callbackURL: `http://localhost:3000/auth/twitter/return`
+  callbackURL: process.env.SERVER_URL + `/auth/twitter/return`
 };
 passport.use(new Strategy(options, (token, tokenSecret, profile, done) => {
 
