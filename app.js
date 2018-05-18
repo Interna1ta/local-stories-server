@@ -24,7 +24,6 @@ const auth = require('./routes/auth')
 const stories = require('./routes/stories')
 const twitter = require('./routes/twitter')
 const users = require('./routes/users')
-// const User = require('../local-stories-server/models/user');
 const User = require('./models/user');
 
 // -- Setup the App
