@@ -1,5 +1,32 @@
-# localstories
-A hyperlocal community stories service
+# Local-stories
+
+This project is the final project of Ironhack Web Development Bootcamp. 
+
+It is a hyperlocal community stories service.
+
+## User stories
+
+User can:
+
+* Signup
+* Login
+* Logout
+* Create a story
+* See all the stories written before
+* Follow/unfollow other users
+
+## Technologies
+
+For the backend (this repository) I used Express generator, and some packages.
+
+For the frontend [Local-Stories-Client](https://github.com/Interna1ta/local-stories-client) I used Angular CLI as a project generator and SASS to style.
+
+The local database was [MongoDB](https://docs.mongodb.com/), and [NodeJs](https://nodejs.org/en/) as a local server.
+And [Heroku](https://www.heroku.com/home) as a cloud platform for the deployment.
+
+## Try the app
+
+[Local-Stories](https://lighttwitter.herokuapp.com/)
 
 ---
 
@@ -8,6 +35,7 @@ A hyperlocal community stories service
 ---
 
 ## AUTH
+
 Method   | Route                       | Whats does?                              |
 |:-------|:----------------------------|:-----------------------------------------|
 |post    |/auth/login                  | creates a new session                    |
@@ -20,6 +48,7 @@ Method   | Route                       | Whats does?                            
 ---
 
 ## STORIES
+
 Method   | Route                       | Whats does?                              |
 |:-------|:----------------------------|:-----------------------------------------|
 |get     |/stories                     | shows the list of stories                |
@@ -30,6 +59,7 @@ Method   | Route                       | Whats does?                            
 ---
 
 ## USER
+
 Method   | Route                       | Whats does?                              |
 |:-------|:----------------------------|:-----------------------------------------|
 |get     |/users/:id                   | shows the users detail page              |
@@ -37,6 +67,7 @@ Method   | Route                       | Whats does?                            
 ---
 
 ## PROFILE
+
 Method   | Route                       | Whats does?                              |
 |:-------|:----------------------------|:-----------------------------------------|
 |put     |/profile/update              | updates an user                          |
