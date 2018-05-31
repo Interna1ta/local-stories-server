@@ -30,7 +30,7 @@ And [Heroku](https://www.heroku.com/home) as a cloud platform for the deployment
 
 ## Back-end Routes
 
-# Auth
+### Auth
 
 Method   | Route                       | Whats does?                              |
 |:-------|:----------------------------|:-----------------------------------------|
@@ -41,7 +41,7 @@ Method   | Route                       | Whats does?                            
 |delete  |/auth/logout                 | deletes user session                     |
 |get     |/auth/me                     | checks user session                      |
 
-# Stories
+### Stories
 
 Method   | Route                       | Whats does?                              |
 |:-------|:----------------------------|:-----------------------------------------|
@@ -50,13 +50,13 @@ Method   | Route                       | Whats does?                            
 |put     |/stories/:id/                | updates a story                          |
 |put     |/stories/:id/cancel          | cancels the story                        |
 
-# User
+### User
 
 Method   | Route                       | Whats does?                              |
 |:-------|:----------------------------|:-----------------------------------------|
 |get     |/users/:id                   | shows the users detail page              |
 
-# Profile
+### Profile
 
 Method   | Route                       | Whats does?                              |
 |:-------|:----------------------------|:-----------------------------------------|
