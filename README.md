@@ -28,13 +28,9 @@ And [Heroku](https://www.heroku.com/home) as a cloud platform for the deployment
 
 [Local-Stories](https://lighttwitter.herokuapp.com/)
 
----
-
 ## Back-end Routes
 
----
-
-## AUTH
+# Auth
 
 Method   | Route                       | Whats does?                              |
 |:-------|:----------------------------|:-----------------------------------------|
@@ -45,9 +41,7 @@ Method   | Route                       | Whats does?                            
 |delete  |/auth/logout                 | deletes user session                     |
 |get     |/auth/me                     | checks user session                      |
 
----
-
-## STORIES
+# Stories
 
 Method   | Route                       | Whats does?                              |
 |:-------|:----------------------------|:-----------------------------------------|
@@ -56,19 +50,14 @@ Method   | Route                       | Whats does?                            
 |put     |/stories/:id/                | updates a story                          |
 |put     |/stories/:id/cancel          | cancels the story                        |
 
----
-
-## USER
+# User
 
 Method   | Route                       | Whats does?                              |
 |:-------|:----------------------------|:-----------------------------------------|
 |get     |/users/:id                   | shows the users detail page              |
 
----
-
-## PROFILE
+# Profile
 
 Method   | Route                       | Whats does?                              |
 |:-------|:----------------------------|:-----------------------------------------|
 |put     |/profile/update              | updates an user                          |
-
