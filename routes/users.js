@@ -69,28 +69,14 @@ router.put('/:id/unfollow', (req, res, next) => {
     .catch(next);
 });
 
-router.post('/:id/checkFollow', (req, res, next) => {
-  const options = {
-    new: true
-  }
+router.get('/:id/checkFollow', (req, res, next) => {
   User.findById(req.params.id)
-    .then((user) => {
-      if (!user) {
-        return res.status(404).json({ code: 'not-found' })
-      }
-      console.log(user.following.length);
-      console.log(req.body.idMe);
-      user.following.find((element) => {
-        if (element == req.body.idMe) {
-          console.log('found!');
-          return res.json(true);
-        }
-      });
-
-      return res.json(false);
+    .then((result) => {
+      return res.json(result);
     })
     .catch(next);
 });
+
 
 router.post('/:id/checkFollowMe', (req, res, next) => {
   const options = {
