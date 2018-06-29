@@ -1,8 +1,10 @@
-# Local-stories
+# Towntype
 
-This project is the final project of Ironhack Web Development Bootcamp. 
+I started this project as the final project of [Ironhack Web Development Bootcamp](www.ironhack.com/). 
 
-It is a hyperlocal community stories service.
+Towntype is a hyperlocal community microblogging service. We give voice to communities.
+
+I've started designing it with [Sketch](https://www.sketchapp.com/) and then give some interactivity with [inVision](https://www.invisionapp.com/).
 
 ## User stories
 
@@ -11,15 +13,15 @@ User can:
 * Signup
 * Login
 * Logout
-* Create a story
-* See all the stories written before
+* Write a tweet
+* See all the tweets written before
 * Follow/unfollow other users
 
 ## Technologies
 
 For the backend (this repository) I used Express generator, and some packages.
 
-For the frontend [Local-Stories-Client](https://github.com/Interna1ta/local-stories-client) I used Angular CLI as a project generator and SASS to style.
+For the frontend [Local-Stories-Client](https://github.com/Interna1ta/local-stories-client) I used Angular CLI as a project generator and [SASS](https://sass-lang.com/) to style.
 
 The local database was [MongoDB](https://docs.mongodb.com/), and [NodeJs](https://nodejs.org/en/) as a local server.
 And [Heroku](https://www.heroku.com/home) as a cloud platform for the deployment.
