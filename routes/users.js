@@ -2,22 +2,13 @@
 
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user');
 
-// router.get('/:id/followers', (req, res, next) => {
-//   console.log('nenaza')
-//   User.findById(req.params.id).populate('following')
-//     .then((result) => {
-//       console.log(result);
-//       return res.json(result);
-//     })
-//     .catch(next);
-// });
+const User = require('../models/user');
+const Notification = require('../models/notification');
 
 router.get('/:id/followers', (req, res, next) => {
   User.find({ "following" : req.params.id})
     .then((result)=>{
-      console.log(result);
       return res.json(result);
     })
     .catch(next);
@@ -25,11 +16,10 @@ router.get('/:id/followers', (req, res, next) => {
 
 router.get('/:id/following', (req, res, next) => {
   User.findById(req.params.id).populate('following')
-    .then((result) => {
-      console.log(result);
-      return res.json(result);
-    })
-    .catch(next);
+  .then((result) => {
+    return res.json(result);
+  })
+  .catch(next);
 });
 
 router.get('/:id', (req, res, next) => {
@@ -39,7 +29,6 @@ router.get('/:id', (req, res, next) => {
     })
     .catch(next);
 });
-
 
 router.put('/:id/follow', (req, res, next) => {
   const options = {
@@ -51,6 +40,23 @@ router.put('/:id/follow', (req, res, next) => {
         return res.status(404).json({ code: 'not-found' })
       }
       res.json(user);
+    })
+    .catch(next);
+});
+
+router.post('/:id/follow', (req, res, next) => {
+
+  const message = (req.body.idMe, "started to follow you");
+  const userId = req.body.idUser;
+
+  const newNotification = new Notification({
+    user: userId,
+    message: message
+  });
+
+  newNotification.save()
+    .then((result) => {
+      res.status(201).json({ code: "okey" })
     })
     .catch(next);
 });
@@ -77,29 +83,28 @@ router.get('/:id/checkFollow', (req, res, next) => {
     .catch(next);
 });
 
+// router.post('/:id/checkFollowMe', (req, res, next) => {
+//   const options = {
+//     new: true
+//   }
+//   User.findById(req.params.id)
+//     .then((user) => {
+//       if (!user) {
+//         return res.status(404).json({ code: 'not-found' })
+//       }
+//       console.log(user.following.length);
+//       console.log(req.body.idMe);
+//       user.following.find((element) => {
+//         if (element == req.body.idMe) {
+//           console.log('found!');
+//           return res.json(true);
+//         }
+//       });
 
-router.post('/:id/checkFollowMe', (req, res, next) => {
-  const options = {
-    new: true
-  }
-  User.findById(req.params.id)
-    .then((user) => {
-      if (!user) {
-        return res.status(404).json({ code: 'not-found' })
-      }
-      console.log(user.following.length);
-      console.log(req.body.idMe);
-      user.following.find((element) => {
-        if (element == req.body.idMe) {
-          console.log('found!');
-          return res.json(true);
-        }
-      });
-
-      return res.json(false);
-    })
-    .catch(next);
-});
+//       return res.json(false);
+//     })
+//     .catch(next);
+// });
 
 // router.put('/:id', (req, res, next) => {
 

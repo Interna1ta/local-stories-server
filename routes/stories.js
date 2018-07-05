@@ -2,18 +2,19 @@
 
 const express = require('express');
 const router = express.Router();
+
 const Story = require('../models/story');
-// const User = require('')
-
-// router.get('/', (req, res, next) => {
-//   Story.find({}, (err, entries) => {
-//     if (err) { return res.json(err).status(500); }
-
-//     return res.json(res);
-//   });
-// });
 
 router.get('/', (req, res, next) => {
+  Story.find({})
+    .populate('user')
+    .then((result) => {
+      res.json(result);
+    })
+    .catch(next);
+});
+
+router.get('/tweets', (req, res, next) => {
   Story.find({})
     .populate('user')
     .then((result) => {
@@ -35,7 +36,6 @@ router.post('/', (req, res, next) => {
   
   const text = req.body.text;
   const userId = req.body.userId;
-  console.log(text);
 
   if (!text) {
     return res.status(422).json({ code: 'unprocessable-entity' })
@@ -58,7 +58,6 @@ router.post('/', (req, res, next) => {
 
 router.get('/users/:id', (req, res, next) => {
   const userId = req.params.id;
-  // Story.find()
   Story.find({ user: userId })
   .populate('user')
     .then((result) => { 

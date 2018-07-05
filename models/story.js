@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const objectId = Schema.Types.ObjectId;
+const objectId = mongoose.Schema.Types.ObjectId;
 
 const StorySchema = new Schema({
   created_at: {
