@@ -9,6 +9,10 @@ const notificationSchema = new Schema({
     type: objectId,
     ref: 'User'
   },
+  created_by: {
+    type: objectId,
+    ref: 'User'
+  },
   message: {
     type: String,
   },

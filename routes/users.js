@@ -16,10 +16,20 @@ router.get('/:id/followers', (req, res, next) => {
 
 router.get('/:id/following', (req, res, next) => {
   User.findById(req.params.id).populate('following')
-  .then((result) => {
-    return res.json(result);
-  })
-  .catch(next);
+    .then((result) => {
+      return res.json(result);
+    })
+    .catch(next);
+});
+
+router.get('/:id/notifications', (req, res, next) => {
+  console.log(req.params.id, 'blabla');
+  Notification.find({ "user": req.params.id }).populate('user').populate('created_by')
+    .then((result) => {
+      console.log(result);
+      return res.json(result);
+    })
+    .catch(next);
 });
 
 router.get('/:id', (req, res, next) => {
@@ -46,11 +56,13 @@ router.put('/:id/follow', (req, res, next) => {
 
 router.post('/:id/follow', (req, res, next) => {
 
-  const message = (req.body.idMe, "started to follow you");
-  const userId = req.body.idUser;
+  const message = "started to follow you";
+  const idUser = req.body.idUser;
+  const idMe = req.body.idMe;
 
   const newNotification = new Notification({
-    user: userId,
+    user: idUser,
+    created_by: idMe,
     message: message
   });
 
