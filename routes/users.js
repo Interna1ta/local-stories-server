@@ -95,59 +95,56 @@ router.get('/:id/checkFollow', (req, res, next) => {
     .catch(next);
 });
 
-// router.post('/:id/checkFollowMe', (req, res, next) => {
+// router.put('/:id/edit', (req, res, next) => {
 //   const options = {
 //     new: true
 //   }
-//   User.findById(req.params.id)
+//   User.findByIdAndUpdate(req.body.id, { $push: { following: req.body.idUser } }, options)
 //     .then((user) => {
 //       if (!user) {
 //         return res.status(404).json({ code: 'not-found' })
 //       }
-//       console.log(user.following.length);
-//       console.log(req.body.idMe);
-//       user.following.find((element) => {
-//         if (element == req.body.idMe) {
-//           console.log('found!');
-//           return res.json(true);
-//         }
-//       });
-
-//       return res.json(false);
+//       res.json(user);
 //     })
 //     .catch(next);
 // });
 
-// router.put('/:id', (req, res, next) => {
+router.put('/:id/edit', (req, res, next) => {
 
-//   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-//     return res.status(422).json({ code: 'unprocesable-entity' })
-//   }
+  console.log('im in the backend')
 
-//   const newData = {
-//     title: req.body.title,
-//     year: req.body.year
-//   }
+  // if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+  //   return res.status(422).json({ code: 'unprocesable-entity' })
+  // }
 
-//   const options = {
-//     new: true
-//   }
+  const newData = {
+    name: req.body.name,
+    username: req.body.username,
+    biography: req.body.biography
+  }
 
-//   Movie.findById(req.params.id)
-//     .then((result) => {
-//       if (!result) {
-//         return res.status(404).json({ code: 'not-found' })
-//       }
+  const options = {
+    new: true
+  }
 
-//       result.title = newData.title;
-//       result.year = newData.year;
+  console.log(newData);
 
-//       return result.save()
-//         .then(() => {
-//           res.json(result);
-//         })
-//     })
-//     .catch(next);
-// });
+  User.findById(req.params.id, options)
+    .then((result) => {
+      if (!result) {
+        return res.status(404).json({ code: 'not-found' })
+      }
+
+      result.name = newData.name;
+      result.username = newData.username;
+      result.description = newData.biography;
+
+      return result.save()
+        .then(() => {
+          res.json(result);
+        })
+    })
+    .catch(next);
+});
 
 module.exports = router;
