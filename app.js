@@ -13,6 +13,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const cloudinary = require("cloudinary").v2;
 
 const passport = require('passport');
 const Strategy = require('passport-twitter').Strategy;
