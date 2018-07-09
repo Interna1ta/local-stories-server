@@ -120,7 +120,7 @@ router.put('/:id/edit', (req, res, next) => {
   const newData = {
     name: req.body.name,
     username: req.body.username,
-    biography: req.body.biography
+    description: req.body.description
   }
 
   const options = {
@@ -137,7 +137,7 @@ router.put('/:id/edit', (req, res, next) => {
 
       result.name = newData.name;
       result.username = newData.username;
-      result.description = newData.biography;
+      result.description = newData.description;
 
       return result.save()
         .then(() => {
