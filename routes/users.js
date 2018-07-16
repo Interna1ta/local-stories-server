@@ -11,6 +11,15 @@ const options = {
   new: true
 }
 
+router.get('/:id/addfollowers', (req, res, next) => {
+  User.find({})
+    // .populate('user')
+    .then((result) => {
+      res.json(result);
+    })
+    .catch(next);
+});
+
 router.get('/:id/followers', (req, res, next) => {
   User.find({ "following" : req.params.id})
     .then((result)=>{
