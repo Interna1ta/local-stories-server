@@ -13,7 +13,7 @@ const options = {
 
 router.get('/:id/addfollowers', (req, res, next) => {
   User.find({})
-    // .populate('user')
+    .populate('user')
     .then((result) => {
       res.json(result);
     })

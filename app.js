@@ -23,6 +23,7 @@ const Strategy = require('passport-twitter').Strategy;
 const index = require('./routes/index');
 const auth = require('./routes/auth')
 const stories = require('./routes/stories')
+const articles = require('./routes/articles')
 const twitter = require('./routes/twitter')
 const users = require('./routes/users')
 const User = require('./models/user');
@@ -115,6 +116,7 @@ app.use('/auth', auth);
 app.use('/stories', stories);
 app.use('/twitter', twitter);
 app.use('/users', users);
+app.use('/articles', articles);
 
 // -- Error Handler
 
