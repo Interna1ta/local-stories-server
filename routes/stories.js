@@ -23,6 +23,15 @@ router.get('/tweets', (req, res, next) => {
     .catch(next);
 });
 
+router.get('/:id', (req, res, next) => {
+  Story.findById(req.params.id)
+    .populate('user')
+    .then((result) => {
+      return res.json(result);
+    })
+    .catch(next);
+});
+
 // router.get('/journal-entries/:id', (req, res, next) => {
 //   Story.findById(req.params.id, (err, entry) => {
 //     if (err) { return res.json(err).status(500); }
