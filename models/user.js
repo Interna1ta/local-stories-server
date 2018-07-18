@@ -33,7 +33,7 @@ const userSchema = new Schema({
   },
   profile_image_url: {
     type: String,
-    default: 'https://thenounproject.com/term/avatar/72032/'
+    // default: '../../../../assets/images/male-icon.png'
   },
   // @todo twitter tokenKey: String,
   // @todo twitter tokenSecret: String
