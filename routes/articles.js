@@ -62,7 +62,7 @@ router.post('/', (req, res, next) => {
 
 router.get('/users/:id', (req, res, next) => {
   const userId = req.params.id;
-  Story.find({ user: userId })
+  Article.find({ user: userId })
     .populate('user')
     .then((result) => {
       return res.json(result);
