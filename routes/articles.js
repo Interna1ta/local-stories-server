@@ -5,6 +5,15 @@ const router = express.Router();
 
 const Article = require('../models/article');
 
+router.get('/:id', (req, res, next) => {
+  Article.findById(req.params.id)
+    .populate('user')
+    .then((result) => {
+      return res.json(result);
+    })
+    .catch(next);
+});
+
 router.get('/', (req, res, next) => {
   Article.find({})
     .populate('user')

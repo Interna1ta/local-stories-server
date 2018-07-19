@@ -2,6 +2,18 @@
 
 const express = require('express');
 const router = express.Router();
+const NodeGeocoder = require('node-geocoder');
+
+const options = {
+  provider: 'google',
+
+  // Optional depending on the providers
+  httpAdapter: 'https', // Default
+  apiKey: process.env.GOOGLE_API_KEY, // for Mapquest, OpenCage, Google Premier
+  formatter: null         // 'gpx', 'string', ...
+};
+
+const geocoder = NodeGeocoder(options);
 
 const Story = require('../models/story');
 
@@ -24,6 +36,14 @@ router.get('/tweets', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
+  //lat and long of an exemple
+  geocoder.reverse({ lat: 41.401046199999996, lon: 2.1312585 })
+    .then(function (res) {
+      console.log(res);
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
   Story.findById(req.params.id)
     .populate('user')
     .then((result) => {
