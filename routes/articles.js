@@ -47,8 +47,6 @@ router.post('/', (req, res, next) => {
   const text = req.body.text;
   const userId = req.body.userId;
 
-  console.log('im inside');
-
   if (!text || !title) {
     return res.status(422).json({ code: 'unprocessable-entity' })
   }
@@ -62,7 +60,7 @@ router.post('/', (req, res, next) => {
   });
 
   newArticle.save()
-    .then((result) => {
+    .then(() => {
       res.status(201).json({ code: "okey" })
     })
     .catch(next);

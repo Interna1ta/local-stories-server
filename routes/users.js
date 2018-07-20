@@ -12,8 +12,7 @@ const options = {
 }
 
 router.get('/:id/addfollowers', (req, res, next) => {
-  User.find({})
-    .populate('user')
+  User.find()
     .then((result) => {
       res.json(result);
     })
@@ -134,7 +133,6 @@ router.put('/:id/image', uploadCloud.single('image'), (req, res, next) => {
 
   User.findByIdAndUpdate(userId, { profile_image_url: image }, this.options)
     .then((result) => {
-      console.log(result)
       req.session.currentUser = result;
       res.json(result);
     })
