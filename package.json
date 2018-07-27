@@ -19,6 +19,7 @@
     "dotenv": "^5.0.1",
     "express": "~4.16.0",
     "express-session": "^1.15.6",
+    "geocoder": "^0.2.3",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
     "mongoose": "^5.0.17",

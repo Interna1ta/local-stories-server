@@ -2,18 +2,19 @@
 
 const express = require('express');
 const router = express.Router();
-const NodeGeocoder = require('node-geocoder');
 
-const options = {
-  provider: 'google',
+// const NodeGeocoder = require('node-geocoder');
 
-  // Optional depending on the providers
-  httpAdapter: 'https', // Default
-  apiKey: process.env.GOOGLE_API_KEY, // for Mapquest, OpenCage, Google Premier
-  formatter: null         // 'gpx', 'string', ...
-};
+// const options = {
+//   provider: 'google',
 
-const geocoder = NodeGeocoder(options);
+//   // Optional depending on the providers
+//   httpAdapter: 'https', // Default
+//   apiKey: process.env.GOOGLE_API_KEY, // for Mapquest, OpenCage, Google Premier
+//   formatter: null         // 'gpx', 'string', ...
+// };
+
+// const geocoder = NodeGeocoder(options);
 
 const Story = require('../models/story');
 
@@ -36,14 +37,6 @@ router.get('/tweets', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  //lat and long of an exemple
-  geocoder.reverse({ lat: 41.401046199999996, lon: 2.1312585 })
-    .then(function (res) {
-      console.log(res);
-    })
-    .catch(function (err) {
-      console.log(err);
-    });
   Story.findById(req.params.id)
     .populate('user')
     .then((result) => {
@@ -65,15 +58,36 @@ router.post('/', (req, res, next) => {
   
   const text = req.body.text;
   const userId = req.body.userId;
+  const coordinates = req.body.coordinates;
 
   if (!text) {
     return res.status(422).json({ code: 'unprocessable-entity' })
   }
 
+  //lat and long of an exemple
+  // geocoder.reverse({ lat: 41.401113699999996, lon: 2.1312309 })
+  //   .then((res) => {
+  //     // console.log(res);
+  //     // city = res[0].city;
+  //     console.log(res[0].city);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+
+  // console.log(text);
+  // console.log(userId);
+  // console.log(coordinates);
+  // console.log(city);
+
   const newStory = new Story({
     text: text,
     user: userId,
-    coordinates: null,
+    // coordinates: {
+    //   lat: coordinates.lat, 
+    //   lon: coordinates.lon
+    // },
+    // city: 'Barcelona',
     enabled: true
   });
 
