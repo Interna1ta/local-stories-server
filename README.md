@@ -28,7 +28,7 @@ And [Heroku](https://www.heroku.com/home) as a cloud platform for the deployment
 
 ## Try the app
 
-[Local-Stories](https://lighttwitter.herokuapp.com/)
+[Local-Stories](https://agoranews.herokuapp.com/)
 
 ## Back-end Routes
 
