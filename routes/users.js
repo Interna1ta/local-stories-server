@@ -79,7 +79,7 @@ router.put('/:id/follow', (req, res, next) => {
       }
       res.json(user);
     })
-    .catch(next);
+    .catch(next); 
 });
 
 router.post('/:id/follow', (req, res, next) => {
@@ -107,14 +107,6 @@ router.put('/:id/unfollow', (req, res, next) => {
         return res.status(404).json({ code: 'not-found' })
       }
       res.json(user);
-    })
-    .catch(next);
-});
-
-router.get('/:id/checkFollow', (req, res, next) => {
-  User.findById(req.params.id)
-    .then((result) => {
-      return res.json(result);
     })
     .catch(next);
 });
