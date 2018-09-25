@@ -12,9 +12,8 @@ const options = {
 }
 
 router.post('/:id/signup', (req, res, next) => {
-  console.log('im in the backend', req.body);
   const message = "Welcome to Agora";
-  const idUser = req.body.idUser;
+  const idUser = req.params.id;
 
   const newNotification = new Notification({
     user: idUser,
