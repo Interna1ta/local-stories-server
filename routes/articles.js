@@ -5,6 +5,17 @@ const router = express.Router();
 
 const Article = require('../models/article');
 
+router.put('/:id/delete', (req, res, next) => {
+  Article.findByIdAndUpdate(req.params.id, { enabled: false }, this.options)
+    .then((article) => {
+      if (!article) {
+        return res.status(404).json({ code: 'not-found' })
+      }
+      res.json(article);
+    })
+    .catch(next);
+});
+
 router.get('/:id', (req, res, next) => {
   Article.findById(req.params.id)
     .populate('user')
@@ -15,7 +26,7 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-  Article.find({})
+  Article.find({ enabled: true})
     .populate('user')
     .then((result) => {
       res.json(result);
@@ -69,7 +80,7 @@ router.post('/', (req, res, next) => {
 
 router.get('/users/:id', (req, res, next) => {
   const userId = req.params.id;
-  Article.find({ user: userId })
+  Article.find({ user: userId, enabled: true })
     .populate('user')
     .then((result) => {
       return res.json(result);
