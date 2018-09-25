@@ -11,6 +11,24 @@ const options = {
   new: true
 }
 
+router.post('/:id/signup', (req, res, next) => {
+  console.log('im in the backend', req.body);
+  const message = "Welcome to Agora";
+  const idUser = req.body.idUser;
+
+  const newNotification = new Notification({
+    user: idUser,
+    created_by: idUser,
+    message: message
+  });
+
+  newNotification.save()
+    .then((result) => {
+      res.status(201).json({ code: "okey" })
+    })
+    .catch(next);
+});
+
 router.get('/:id/addfollowers', (req, res, next) => {
   User.find()
     .then((result) => {

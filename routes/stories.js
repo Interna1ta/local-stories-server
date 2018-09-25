@@ -19,7 +19,7 @@ const router = express.Router();
 const Story = require('../models/story');
 
 router.get('/', (req, res, next) => {
-  Story.find({})
+  Story.find({ enabled: true })
     .populate('user')
     .then((result) => {
       res.json(result);
@@ -32,6 +32,17 @@ router.get('/tweets', (req, res, next) => {
     .populate('user')
     .then((result) => {
       res.json(result);
+    })
+    .catch(next);
+});
+
+router.put('/:id/delete', (req, res, next) => {
+  Story.findByIdAndUpdate(req.params.id, { enabled: false }, this.options)
+    .then((story) => {
+      if (!story) {
+        return res.status(404).json({ code: 'not-found' })
+      }
+      res.json(story);
     })
     .catch(next);
 });

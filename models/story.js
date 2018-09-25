@@ -20,13 +20,6 @@ const StorySchema = new Schema({
   coordinates: {
     type: Object
   },
-  coordinates: {
-    type: Object
-  },
-  text: {
-    type: String,
-    // required: [true, "text is required"]
-  },
   enabled: {
     type: Boolean
   }

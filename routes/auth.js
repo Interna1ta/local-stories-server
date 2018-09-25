@@ -25,7 +25,7 @@ router.post('/login', (req, res, next) => {
   if (!username || !password) {
     return res.status(422).json({ code: 'validation' });
   }
-
+ 
   User.findOne({ username })
     .then((user) => {
       if (!user) {
