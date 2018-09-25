@@ -112,7 +112,7 @@ router.post('/', (req, res, next) => {
 
 router.get('/users/:id', (req, res, next) => {
   const userId = req.params.id;
-  Story.find({ user: userId })
+  Story.find({ user: userId, enabled: true })
   .populate('user')
     .then((result) => { 
       return res.json(result);
