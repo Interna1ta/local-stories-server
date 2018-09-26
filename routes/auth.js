@@ -82,7 +82,6 @@ router.post('/logout', (req, res) => {
 });
 
 router.get('/twitter/login', passport.authenticate('twitter'), (req,res,next) => {
-  console.log('!');
 });
 
 router.get('/twitter/return', passport.authenticate('twitter'), (req, res, next) => {

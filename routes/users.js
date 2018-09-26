@@ -27,7 +27,7 @@ router.post('/:id/signup', (req, res, next) => {
     })
     .catch(next);
 });
-  
+
 router.get('/:id/addfollowers', (req, res, next) => {
   User.find()
     .then((result) => {
