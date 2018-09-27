@@ -11,22 +11,22 @@ const options = {
   new: true
 }
 
-router.post('/:id/signup', (req, res, next) => {
-  const message = "Welcome to Agora";
-  const idUser = req.params.id;
+// router.post('/:id/signup', (req, res, next) => {
+//   const message = "Welcome to Agora";
+//   const idUser = req.params.id;
 
-  const newNotification = new Notification({
-    user: idUser,
-    created_by: idUser,
-    message: message
-  });
+//   const newNotification = new Notification({
+//     user: idUser,
+//     created_by: idUser,
+//     message: message
+//   });
 
-  newNotification.save()
-    .then((result) => {
-      res.status(201).json({ code: "okey" })
-    })
-    .catch(next);
-});
+//   newNotification.save()
+//     .then((result) => {
+//       res.status(201).json({ code: "okey" })
+//     })
+//     .catch(next);
+// });
 
 router.get('/:id/addfollowers', (req, res, next) => {
   User.find()
@@ -53,15 +53,15 @@ router.get('/:id/following', (req, res, next) => {
     .catch(next);
 });
 
-router.get('/:id/notifications', (req, res, next) => {
-  Notification.find({ "user": req.params.id })
-    .populate('user')
-    .populate('created_by')
-    .then((result) => {
-      return res.json(result);
-    })
-    .catch(next);
-});
+// router.get('/:id/notifications', (req, res, next) => {
+//   Notification.find({ "user": req.params.id })
+//     .populate('user')
+//     .populate('created_by')
+//     .then((result) => {
+//       return res.json(result);
+//     })
+//     .catch(next);
+// });
 
 router.get('/:id', (req, res, next) => {
   User.findById(req.params.id)
@@ -82,23 +82,23 @@ router.put('/:id/follow', (req, res, next) => {
     .catch(next); 
 });
 
-router.post('/:id/follow', (req, res, next) => {
-  const message = "started to follow you";
-  const idUser = req.body.idUser;
-  const idMe = req.body.idMe;
+// router.post('/:id/follow', (req, res, next) => {
+//   const message = "started to follow you";
+//   const idUser = req.body.idUser;
+//   const idMe = req.body.idMe;
 
-  const newNotification = new Notification({
-    user: idUser,
-    created_by: idMe,
-    message: message
-  });
+//   const newNotification = new Notification({
+//     user: idUser,
+//     created_by: idMe,
+//     message: message
+//   });
 
-  newNotification.save()
-    .then((result) => {
-      res.status(201).json({ code: "okey" })
-    })
-    .catch(next);
-});
+//   newNotification.save()
+//     .then((result) => {
+//       res.status(201).json({ code: "okey" })
+//     })
+//     .catch(next);
+// });
 
 router.put('/:id/unfollow', (req, res, next) => {
   User.findByIdAndUpdate(req.body.idMe, { $pull: { following: req.body.idUser }}, this.options)

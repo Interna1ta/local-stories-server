@@ -13,7 +13,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-// const cloudinary = require("cloudinary").v2;
 
 const passport = require('passport');
 const Strategy = require('passport-twitter').Strategy;
@@ -22,10 +21,11 @@ const Strategy = require('passport-twitter').Strategy;
 
 const index = require('./routes/index');
 const auth = require('./routes/auth')
+const users = require('./routes/users')
 const stories = require('./routes/stories')
 const articles = require('./routes/articles')
+const notifications = require('./routes/notifications')
 const twitter = require('./routes/twitter')
-const users = require('./routes/users')
 const User = require('./models/user');
 
 // -- Setup the App
@@ -113,10 +113,11 @@ app.use(passport.session());
 
 app.use('/', index);
 app.use('/auth', auth);
-app.use('/stories', stories);
-app.use('/twitter', twitter);
 app.use('/users', users);
+app.use('/stories', stories);
 app.use('/articles', articles);
+app.use('/notifications', notifications);
+app.use('/twitter', twitter);
 
 // -- Error Handler
 
