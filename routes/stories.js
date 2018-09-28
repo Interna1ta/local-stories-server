@@ -6,7 +6,13 @@ const router = express.Router();
 const Story = require('../models/story');
 
 router.get('/', (req, res, next) => {
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+
   Story.find({ enabled: true })
+    .sort({ created_at: -1 })
+    .limit(10)
     .populate('user')
     .then((result) => {
       res.json(result);
@@ -14,19 +20,24 @@ router.get('/', (req, res, next) => {
     .catch(next);
 });
 
-router.get('/tweets', (req, res, next) => {
-  Story.find({})
+router.get('/:id', (req, res, next) => {
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+
+  Story.findById(req.params.id)
     .populate('user')
     .then((result) => {
-      res.json(result);
+      return res.json(result);
     })
     .catch(next);
 });
 
 router.put('/:id/delete', (req, res, next) => {
-  //   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-  //     return res.status(422).json({ code: 'unprocesable-entity' })
-  //   }
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+
   Story.findByIdAndUpdate(req.params.id, { enabled: false }, this.options)
     .then((story) => {
       if (!story) {
@@ -37,20 +48,13 @@ router.put('/:id/delete', (req, res, next) => {
     .catch(next);
 });
 
-router.get('/:id', (req, res, next) => {
-  Story.findById(req.params.id)
-    .populate('user')
-    .then((result) => {
-      return res.json(result);
-    })
-    .catch(next);
-});
-
 router.post('/', (req, res, next) => {
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
   
   const text = req.body.text;
   const userId = req.body.userId;
-  const coordinates = req.body.coordinates;
 
   if (!text) {
     return res.status(422).json({ code: 'unprocessable-entity' })
@@ -59,11 +63,6 @@ router.post('/', (req, res, next) => {
   const newStory = new Story({
     text: text,
     user: userId,
-    // coordinates: {
-    //   lat: coordinates.lat, 
-    //   lon: coordinates.lon
-    // },
-    // city: 'Barcelona',
     enabled: true
   });
 
@@ -76,8 +75,11 @@ router.post('/', (req, res, next) => {
 });
 
 router.get('/users/:id', (req, res, next) => {
-  const userId = req.params.id;
-  Story.find({ user: userId, enabled: true })
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+
+  Story.find({ user: req.params.id, enabled: true })
   .populate('user')
     .then((result) => { 
       return res.json(result);

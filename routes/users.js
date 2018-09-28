@@ -5,65 +5,16 @@ const router = express.Router();
 const uploadCloud = require('../configs/cloudinary.js');
 
 const User = require('../models/user');
-const Notification = require('../models/notification');
 
 const options = {
   new: true
 }
 
-// router.post('/:id/signup', (req, res, next) => {
-//   const message = "Welcome to Agora";
-//   const idUser = req.params.id;
-
-//   const newNotification = new Notification({
-//     user: idUser,
-//     created_by: idUser,
-//     message: message
-//   });
-
-//   newNotification.save()
-//     .then((result) => {
-//       res.status(201).json({ code: "okey" })
-//     })
-//     .catch(next);
-// });
-
-router.get('/:id/addfollowers', (req, res, next) => {
-  User.find()
-    .then((result) => {
-      res.json(result);
-    })
-    .catch(next);
-});
-
-router.get('/:id/followers', (req, res, next) => {
-  User.find({ "following" : req.params.id})
-    .then((result)=>{
-      return res.json(result);
-    })
-    .catch(next);
-});
-
-router.get('/:id/following', (req, res, next) => {
-  User.findById(req.params.id)
-    .populate('following')
-    .then((result) => {
-      return res.json(result);
-    })
-    .catch(next);
-});
-
-// router.get('/:id/notifications', (req, res, next) => {
-//   Notification.find({ "user": req.params.id })
-//     .populate('user')
-//     .populate('created_by')
-//     .then((result) => {
-//       return res.json(result);
-//     })
-//     .catch(next);
-// });
-
 router.get('/:id', (req, res, next) => {
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+
   User.findById(req.params.id)
     .then((result) => {
       return res.json(result);
@@ -72,7 +23,11 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.put('/:id/follow', (req, res, next) => {
-  User.findByIdAndUpdate(req.body.idMe, { $push: { following: req.body.idUser}}, this.options)
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+
+  User.findByIdAndUpdate(req.body.idMe, { $push: { following: req.body.idUser}}, options)
     .then((user) => {
       if (!user) {
         return res.status(404).json({ code: 'not-found' })
@@ -82,26 +37,12 @@ router.put('/:id/follow', (req, res, next) => {
     .catch(next); 
 });
 
-// router.post('/:id/follow', (req, res, next) => {
-//   const message = "started to follow you";
-//   const idUser = req.body.idUser;
-//   const idMe = req.body.idMe;
-
-//   const newNotification = new Notification({
-//     user: idUser,
-//     created_by: idMe,
-//     message: message
-//   });
-
-//   newNotification.save()
-//     .then((result) => {
-//       res.status(201).json({ code: "okey" })
-//     })
-//     .catch(next);
-// });
-
 router.put('/:id/unfollow', (req, res, next) => {
-  User.findByIdAndUpdate(req.body.idMe, { $pull: { following: req.body.idUser }}, this.options)
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+
+  User.findByIdAndUpdate(req.body.idMe, { $pull: { following: req.body.idUser }}, options)
     .then((user) => {
       if (!user) {
         return res.status(404).json({ code: 'not-found' })
@@ -111,14 +52,55 @@ router.put('/:id/unfollow', (req, res, next) => {
     .catch(next);
 });
 
+router.get('/:id/followers', (req, res, next) => {
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+
+  User.find({ "following": req.params.id })
+    .then((result) => {
+      return res.json(result);
+    })
+    .catch(next);
+});
+
+router.get('/:id/following', (req, res, next) => {
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+
+  User.findById(req.params.id)
+    .populate('following')
+    .then((result) => {
+      return res.json(result);
+    })
+    .catch(next);
+});
+
+router.get('/:id/addfollowers', (req, res, next) => {
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+
+  User.find()
+    .then((result) => {
+      res.json(result);
+    })
+    .catch(next);
+});
+
 router.put('/:id/edit', (req, res, next) => {
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+
   const newData = {
     name: req.body.name,
     username: req.body.username,
     description: req.body.description
   }
 
-  User.findById(req.params.id, this.options)
+  User.findById(req.params.id, options)
     .then((result) => {
       if (!result) {
         return res.status(404).json({ code: 'not-found' })
@@ -137,10 +119,14 @@ router.put('/:id/edit', (req, res, next) => {
 });
 
 router.put('/:id/image', uploadCloud.single('image'), (req, res, next) => {
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+  
   const userId = req.session.currentUser._id;
   const image = req.file.url;
 
-  User.findByIdAndUpdate(userId, { profile_image_url: image }, this.options)
+  User.findByIdAndUpdate(userId, { profile_image_url: image }, options)
     .then((result) => {
       req.session.currentUser = result;
       res.json(result);

@@ -11,6 +11,10 @@ const options = {
 }
 
 router.get('/:id', (req, res, next) => {
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+
   Notification.find({ "user": req.params.id })
     .populate('user')
     .populate('created_by')
@@ -21,12 +25,16 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.post('/:id/signup', (req, res, next) => {
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+
   const message = "Welcome to Agora";
-  const idUser = req.params.id;
+  const newUser = req.params.id;
 
   const newNotification = new Notification({
-    user: idUser,
-    created_by: idUser,
+    user: newUser,
+    created_by: newUser,
     message: message
   });
 
@@ -38,6 +46,10 @@ router.post('/:id/signup', (req, res, next) => {
 });
 
 router.post('/:id/follow', (req, res, next) => {
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+  
   const message = "started to follow you";
   const idUser = req.body.idUser;
   const idMe = req.body.idMe;

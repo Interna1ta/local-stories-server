@@ -6,6 +6,10 @@ const router = express.Router();
 const Article = require('../models/article');
 
 router.put('/:id/delete', (req, res, next) => {
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+
   Article.findByIdAndUpdate(req.params.id, { enabled: false }, this.options)
     .then((article) => {
       if (!article) {
@@ -17,6 +21,10 @@ router.put('/:id/delete', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+
   Article.findById(req.params.id)
     .populate('user')
     .then((result) => {
@@ -26,7 +34,12 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+
   Article.find({ enabled: true})
+    .sort({ created_at: -1 })
     .populate('user')
     .then((result) => {
       res.json(result);
@@ -34,25 +47,10 @@ router.get('/', (req, res, next) => {
     .catch(next);
 });
 
-// router.get('/tweets', (req, res, next) => {
-//   Article.find({})
-//     .populate('user')
-//     .then((result) => {
-//       res.json(result);
-//     })
-//     .catch(next);
-// });
-
-// router.get('/journal-entries/:id', (req, res, next) => {
-//   Story.findById(req.params.id, (err, entry) => {
-//     if (err) { return res.json(err).status(500); }
-//     if (!entry) { return res.json(err).status(404); }
-
-//     return res.json(entry);
-//   });
-// });
-
 router.post('/', (req, res, next) => {
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
 
   const title = req.body.title;
   const text = req.body.text;
@@ -79,33 +77,16 @@ router.post('/', (req, res, next) => {
 });
 
 router.get('/users/:id', (req, res, next) => {
-  const userId = req.params.id;
-  Article.find({ user: userId, enabled: true })
+  if (!req.session.currentUser) {
+    return res.status(401).json({ code: 'unauthorized' });
+  }
+
+  Article.find({ user: req.params.id, enabled: true })
     .populate('user')
     .then((result) => {
       return res.json(result);
     })
     .catch(next);
 });
-
-// router.delete('/:id', (req, res, next) => {
-
-//   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-//     return res.status(422).json({ code: 'unprocesable-entity' })
-//   }
-
-//   Story.findById(req.params.id)
-//     .then((result) => {
-//       if (!result) {
-//         return res.status(404).json({ code: 'not-found' })
-//       }
-
-//       return result.remove()
-//         .then(() => {
-//           res.json(result);
-//         })
-//     })
-//     .catch(next);
-// });
 
 module.exports = router;
