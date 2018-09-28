@@ -51,12 +51,10 @@ router.post('/:id/follow', (req, res, next) => {
   }
   
   const message = "started to follow you";
-  const idUser = req.body.idUser;
-  const idMe = req.body.idMe;
-
+ 
   const newNotification = new Notification({
-    user: idUser,
-    created_by: idMe,
+    user: req.params.id,
+    created_by: req.session.currentUser._id,
     message: message
   });
 

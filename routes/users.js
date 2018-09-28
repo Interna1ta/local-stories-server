@@ -27,7 +27,7 @@ router.put('/:id/follow', (req, res, next) => {
     return res.status(401).json({ code: 'unauthorized' });
   }
 
-  User.findByIdAndUpdate(req.body.idMe, { $push: { following: req.body.idUser}}, options)
+  User.findByIdAndUpdate(req.session.currentUser._id, { $push: { following: req.params.id}}, options)
     .then((user) => {
       if (!user) {
         return res.status(404).json({ code: 'not-found' })
@@ -42,7 +42,7 @@ router.put('/:id/unfollow', (req, res, next) => {
     return res.status(401).json({ code: 'unauthorized' });
   }
 
-  User.findByIdAndUpdate(req.body.idMe, { $pull: { following: req.body.idUser }}, options)
+  User.findByIdAndUpdate(req.session.currentUser._id, { $pull: { following: req.params.id }}, options)
     .then((user) => {
       if (!user) {
         return res.status(404).json({ code: 'not-found' })
